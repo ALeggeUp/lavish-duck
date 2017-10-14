@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  - pom.xml
+  -
+  - Copyright (C) 2017 Stephen Legge, Tim McCrabb and Andy Redfearn
+  -
+  - This software may be modified and distributed under the terms
+  - of the MIT license.  See the LICENSE file for details.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.riskysolid.webapp</groupId>
+  <artifactId>lavish-duck-reactor</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+
+  <packaging>pom</packaging>
+
+  <name>${project.artifactId}::${project.version}</name>
+  <description>Reactor build for the lavish-duck project.  Not intended to be published as a build artifact.</description>
+
+  <inceptionYear>2017</inceptionYear>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <modules>
+    <module>application/lavish-duck-parent</module>
+    <module>application/lavish-duck-frontend</module>
+    <module>application/lavish-duck-webapp</module>
+  </modules>
+
+</project>
