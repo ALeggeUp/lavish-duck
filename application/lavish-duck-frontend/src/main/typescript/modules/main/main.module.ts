@@ -22,6 +22,7 @@ import { ExistingComponent } from './views/existing/existing.component';
 import { IntroComponent } from './views/intro/intro.component';
 import { MoreComponent } from './views/more/more.component';
 
+import { MetaMaskService } from './services/metamask.service';
 import { LoggerService } from './services/logger.service';
 
 @NgModule({
@@ -43,6 +44,7 @@ import { LoggerService } from './services/logger.service';
   exports: [
   ],
   providers: [
+    MetaMaskService,
     LoggerService
   ]
 })

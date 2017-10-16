@@ -9,6 +9,8 @@
 
 import { Component, Inject, OnInit, AfterViewInit } from '@angular/core';
 
+import { MetaMaskService } from '../../services/metamask.service';
+
 @Component({
     selector: 'app-intro-content',
     templateUrl: './intro.component.html',
@@ -16,19 +18,23 @@ import { Component, Inject, OnInit, AfterViewInit } from '@angular/core';
 })
 
 export class IntroComponent implements OnInit, AfterViewInit {
+
     title = 'Lavish Duck';
     subtitle = '';
 
-    constructor() {
+    private web3: any;
+
+    constructor(@Inject(MetaMaskService) private metaMaskService) {
     }
 
     ngOnInit() {
     }
 
     ngAfterViewInit() {
-    }
-
-    scratch() {
-        alert('app-component-scratch');
+        this.metaMaskService.Web3Promise().then(web3 => {
+            this.subtitle = web3.eth.accounts[0];
+            console.log(web3);
+            this.web3 = web3
+        });
     }
 }

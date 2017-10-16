@@ -7,21 +7,23 @@
  * of the MIT license.  See the LICENSE file for details.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Input, Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-header-banner',
-  templateUrl: './header-banner.component.html',
-  styleUrls: ['./header-banner.component.css'],
+    selector: 'app-header-banner',
+    templateUrl: './header-banner.component.html',
+    styleUrls: ['./header-banner.component.css'],
 })
 
 export class HeaderBannerComponent implements OnInit {
-  title = 'Lavish Duck';
-  subtitle = '';
 
-  constructor() {
-  }
+    @Input() subtitle: string;
 
-  ngOnInit() {
-  }
+    title = 'Lavish Duck';
+
+    constructor() {
+    }
+
+    ngOnInit() {
+    }
 }
