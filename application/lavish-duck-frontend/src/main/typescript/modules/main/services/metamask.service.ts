@@ -8,35 +8,50 @@
  */
 
 import { Injectable, Output, EventEmitter } from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
+import 'rxjs/add/observable/fromPromise';
 
 @Injectable()
 export class MetaMaskService {
 
     private web3Instance : any;
+    private account : string;
+
+    @Output()
+    accountChange: EventEmitter<string> = new EventEmitter();
 
     @Output() update = new EventEmitter();
 
     constructor() {
-        Observable.timer(500, 1000).subscribe((value) => this.refresh(value));
+        Observable.timer(500, 1000).subscribe((value) => this.refresh(value, false));
     }
 
-    refresh(value: number): void {
-        if (!this.web3) {
-            this.web3 = new this.Web3(window['web3'].currentProvider);
-            this.setAccount(this.web3);
-        } else {
-            this.setAccount(this.web3);
-        }
+    refresh(value: number, force: boolean): void {
+        this.Web3Promise().then((web3) => {
+            return this.getAccounts(web3);
+        }).then((accounts) => {
+            this.account = accounts[0];
+            if (force || !localStorage['lastAccount'] || localStorage['lastAccount'] !== this.account) {
+                localStorage['lastAccount'] = this.account;
+                this.accountChange.emit(this.account);
+            }
+        });
     }
 
-    setAccount(web3: any): void {
-        var account = web3.eth.accounts[0];
-        if (!localStorage['lastAccount'] || localStorage['lastAccount'] !== account) {
-            localStorage['lastAccount'] = account;
-            console.log(account);
-        }
+    getAccounts(web3: any): Promise<any> {
+        return new Promise(function(resolve, reject) {
+            web3.eth.getAccounts(function(err, data) {
+                if(err !== null) {
+                    return reject(err);
+                }
+                resolve(data);
+            });
+        });
+    }
+
+    getAccountChangeEmitter() {
+        return this.accountChange;
     }
 
     isConnected(): boolean {
@@ -50,23 +65,14 @@ export class MetaMaskService {
     }
 
     waitForWeb3(): any {
-        while(window['web3'] == 'undefined') {
+        while(typeof window['web3'] === 'undefined') {
             console.log('waiting for web3');
         }
 
-        this.refresh(0);
-        return this.web3;
+        return new this.Web3(window['web3'].currentProvider);
     }
 
     get Web3(): any {
         return window['Web3'];
-    }
-
-    get web3(): any {
-        return this.web3Instance;
-    }
-
-    set web3(web3: any) {
-        this.web3Instance = web3;
     }
 }

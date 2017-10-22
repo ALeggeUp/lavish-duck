@@ -23,18 +23,23 @@ export class IntroComponent implements OnInit, AfterViewInit {
     subtitle = '';
 
     private web3: any;
+    accountSubscription: any;
 
     constructor(@Inject(MetaMaskService) private metaMaskService) {
     }
 
     ngOnInit() {
+        this.accountSubscription = this.metaMaskService.getAccountChangeEmitter().subscribe(
+            account => {
+                console.log(account);
+                this.subtitle = account;
+            }
+        );
     }
 
     ngAfterViewInit() {
-        this.metaMaskService.Web3Promise().then(web3 => {
-            this.subtitle = web3.eth.accounts[0];
-            console.log(web3);
-            this.web3 = web3
-        });
+        if (this.accountSubscription !== 'undefined') {
+            this.metaMaskService.refresh(0, true);
+        }
     }
 }
