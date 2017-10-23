@@ -10,13 +10,12 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
-import 'rxjs/add/observable/fromPromise';
 
 @Injectable()
 export class MetaMaskService {
 
-    private web3Instance : any;
-    private account : string;
+    private web3Instance: any;
+    private account: string;
 
     @Output()
     accountChange: EventEmitter<string> = new EventEmitter();
@@ -42,7 +41,7 @@ export class MetaMaskService {
     getAccounts(web3: any): Promise<any> {
         return new Promise(function(resolve, reject) {
             web3.eth.getAccounts(function(err, data) {
-                if(err !== null) {
+                if (err !== null) {
                     return reject(err);
                 }
                 resolve(data);
@@ -65,7 +64,7 @@ export class MetaMaskService {
     }
 
     waitForWeb3(): any {
-        while(typeof window['web3'] === 'undefined') {
+        while (typeof window['web3'] === 'undefined') {
             console.log('waiting for web3');
         }
 
