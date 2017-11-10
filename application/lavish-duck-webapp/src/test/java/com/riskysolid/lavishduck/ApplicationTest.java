@@ -11,18 +11,31 @@ package com.riskysolid.lavishduck;
 
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
+import javax.sql.DataSource;
 
-/**
- * Unit test for simple App.
- */
-public class AppTest
-{
-    /**
-     * Rigourous Test :-)
-     */
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.riskysolid.lavishduck.config.Config;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@ContextConfiguration(classes = {Config.class})
+public class ApplicationTest {
+
+    @MockBean
+    DataSource mockDatasource;
+
+    @MockBean
+    FilterRegistrationBean mockFilterRegistrationBean;
+
     @Test
-    public void testApp() {
+    public void applicationContextLoad() {
         assertTrue(true);
     }
 }
