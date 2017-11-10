@@ -30,6 +30,10 @@ public class ApiController {
     public Boolean login(@PathVariable final String role,
             final HttpServletRequest request) throws ServletException {
         final Claims claims = (Claims) request.getAttribute("claims");
+        
+        if (claims == null || claims.isEmpty()) {
+            return false;
+        }
 
         return ((List<String>) claims.get("roles")).contains(role);
     }
