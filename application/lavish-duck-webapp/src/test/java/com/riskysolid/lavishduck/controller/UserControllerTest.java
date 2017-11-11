@@ -17,6 +17,7 @@ import javax.sql.DataSource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -30,6 +31,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.riskysolid.lavishduck.config.Config;
+import com.riskysolid.lavishduck.service.UserService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -48,10 +50,13 @@ public class UserControllerTest {
     @MockBean
     FilterRegistrationBean mockFilterRegistrationBean;
 
+    @Mock
+    UserService mockUserService;
+
     @Before
     public void setUp() {
         this.mockMvc = MockMvcBuilders
-                .standaloneSetup(new UserController()).build();
+                .standaloneSetup(new UserController(mockUserService)).build();
     }
 
     @Test
