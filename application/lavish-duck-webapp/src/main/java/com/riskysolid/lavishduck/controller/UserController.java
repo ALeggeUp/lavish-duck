@@ -15,12 +15,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletException;
-
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.riskysolid.lavishduck.controller.exception.InvalidLoginException;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -37,11 +37,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
-    public LoginResponse login(@RequestBody final UserLogin login)
-        throws ServletException {
+    public LoginResponse login(@RequestBody final UserLogin login) throws InvalidLoginException {
 
-        if (login.name == null || !userDb.containsKey(login.name)) {
-            throw new ServletException("Invalid login");
+        if (login == null || login.name == null || !userDb.containsKey(login.name)) {
+            throw new InvalidLoginException();
         }
 
         return new LoginResponse(Jwts.builder().setSubject(login.name)
