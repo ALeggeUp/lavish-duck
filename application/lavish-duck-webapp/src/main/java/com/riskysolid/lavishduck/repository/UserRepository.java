@@ -13,5 +13,5 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.riskysolid.lavishduck.repository.entity.User;
 
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface UserRepository extends CrudRepository<User, String> {
 }
