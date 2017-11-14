@@ -9,6 +9,7 @@
 
 package com.riskysolid.lavishduck.repository;
 
+import java.security.SecureRandom;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,10 +32,12 @@ public class UserRepositoryInitializer {
     private static final String ROLE_ADMIN = "admin";
 
     private final UserRepository userRepository;
+    private final SecureRandom secureRandom;
 
     @Autowired
-    public UserRepositoryInitializer(final UserRepository userRepository) {
+    public UserRepositoryInitializer(final UserRepository userRepository, final SecureRandom secureRandom) {
         this.userRepository = userRepository;
+        this.secureRandom = secureRandom;
     }
 
     @PostConstruct
@@ -59,7 +62,7 @@ public class UserRepositoryInitializer {
     }
 
     private void initialize() {
-        userRepository.save(new User("tom", "", roles(ROLE_USER)));
-        userRepository.save(new User("sally", "", roles(ROLE_USER, ROLE_ADMIN)));
+        userRepository.save(new User("admin", "", roles(ROLE_USER, ROLE_ADMIN)));
+        userRepository.save(new User("user", "", roles(ROLE_USER)));
     }
 }
