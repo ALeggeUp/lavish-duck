@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.riskysolid.lavishduck.controller.exception.InvalidLoginException;
 import com.riskysolid.lavishduck.model.LoginResponse;
 import com.riskysolid.lavishduck.model.UserLogin;
+import com.riskysolid.lavishduck.repository.entity.User;
 import com.riskysolid.lavishduck.service.UserService;
 
 import io.jsonwebtoken.Jwts;
@@ -39,12 +40,18 @@ public class UserController {
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public LoginResponse login(@RequestBody final UserLogin login) throws InvalidLoginException {
 
-        if (login == null || login.getName() == null || !userService.containsKey(login.getName())) {
+        if (login == null || login.getName() == null || !userService.containsKey(login.getName()) ||
+                login.getPassword() == null || login.getPassword().isEmpty()) {
+            throw new InvalidLoginException();
+        }
+
+        final User user = userService.getById(login.getName());
+        if (!userService.matches(login.getPassword(), user.getPassword())) {
             throw new InvalidLoginException();
         }
 
         return new LoginResponse(Jwts.builder().setSubject(login.getName())
-            .claim("roles", userService.getById(login.getName()).getRoles())
+            .claim("roles", user.getRoles())
             .setIssuedAt(new Date())
             .signWith(SignatureAlgorithm.HS256, "secretkey")
             .compact());

@@ -9,7 +9,10 @@
 
 package com.riskysolid.lavishduck.service;
 
+import java.security.SecureRandom;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.riskysolid.lavishduck.repository.UserRepository;
@@ -19,10 +22,12 @@ import com.riskysolid.lavishduck.repository.entity.User;
 public class EmbeddedUserService implements UserService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public EmbeddedUserService(final UserRepository userRepository) {
+    public EmbeddedUserService(final UserRepository userRepository, final SecureRandom secureRandom) {
         this.userRepository = userRepository;
+        this.passwordEncoder = new BCryptPasswordEncoder(10, secureRandom);
     }
 
     @Override
@@ -38,5 +43,20 @@ public class EmbeddedUserService implements UserService {
     @Override
     public boolean containsKey(final String key) {
         return userRepository.exists(key);
+    }
+
+    @Override
+    public String encrypt(final String raw) {
+        return passwordEncoder.encode(raw);
+    }
+
+    @Override
+    public boolean matches(final String raw, final String encoded) {
+        return passwordEncoder.matches(raw, encoded);
+    }
+
+    @Override
+    public long count() {
+        return userRepository.count();
     }
 }

@@ -18,4 +18,10 @@ public interface UserService {
     User getById(String key);
 
     boolean containsKey(String key);
+
+    String encrypt(String raw);
+
+    boolean matches(String raw, String encoded);
+
+    long count();
 }
