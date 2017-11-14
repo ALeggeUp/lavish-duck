@@ -9,13 +9,13 @@
 
 package com.riskysolid.lavishduck.service;
 
-import java.util.List;
+import com.riskysolid.lavishduck.repository.entity.User;
 
 public interface UserService {
 
-    void put(String key, List<String> list);
+    void save(User user);
 
-    List<String> get(String key);
+    User getById(String key);
 
     boolean containsKey(String key);
 }

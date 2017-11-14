@@ -44,7 +44,7 @@ public class UserController {
         }
 
         return new LoginResponse(Jwts.builder().setSubject(login.getName())
-            .claim("roles", userService.get(login.getName()))
+            .claim("roles", userService.getById(login.getName()).getRoles())
             .setIssuedAt(new Date())
             .signWith(SignatureAlgorithm.HS256, "secretkey")
             .compact());

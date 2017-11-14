@@ -9,35 +9,34 @@
 
 package com.riskysolid.lavishduck.service;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.riskysolid.lavishduck.repository.UserRepository;
+import com.riskysolid.lavishduck.repository.entity.User;
 
 @Service
 public class EmbeddedUserService implements UserService {
 
-    private final Map<String, List<String>> userDb = new HashMap<>();
+    private final UserRepository userRepository;
 
-    public EmbeddedUserService() {
-        userDb.put("tom", Arrays.asList("user"));
-        userDb.put("sally", Arrays.asList("user", "admin"));
+    @Autowired
+    public EmbeddedUserService(final UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
-    public void put(final String key, final List<String> list) {
-        userDb.put(key, list);
+    public void save(final User user) {
+        userRepository.save(user);
     }
 
     @Override
-    public List<String> get(final String key) {
-        return userDb.get(key);
+    public User getById(final String key) {
+        return userRepository.findOne(key);
     }
 
     @Override
     public boolean containsKey(final String key) {
-        return userDb.containsKey(key);
+        return userRepository.exists(key);
     }
 }

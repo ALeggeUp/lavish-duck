@@ -9,6 +9,8 @@
 
 package com.riskysolid.lavishduck.config;
 
+import java.security.SecureRandom;
+
 import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
@@ -52,5 +54,10 @@ public class Config {
         registrationBean.addUrlPatterns("/api/*");
 
         return registrationBean;
+    }
+
+    @Bean
+    public SecureRandom secureRandom() {
+        return new SecureRandom();
     }
 }
