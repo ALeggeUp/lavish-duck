@@ -18,6 +18,7 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.riskysolid.lavishduck.repository.entity.Role;
@@ -32,12 +33,12 @@ public class UserRepositoryInitializer {
     private static final String ROLE_ADMIN = "admin";
 
     private final UserRepository userRepository;
-    private final SecureRandom secureRandom;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     public UserRepositoryInitializer(final UserRepository userRepository, final SecureRandom secureRandom) {
         this.userRepository = userRepository;
-        this.secureRandom = secureRandom;
+        this.passwordEncoder = new BCryptPasswordEncoder(10, secureRandom);
     }
 
     @PostConstruct
@@ -62,7 +63,11 @@ public class UserRepositoryInitializer {
     }
 
     private void initialize() {
-        userRepository.save(new User("admin", "", roles(ROLE_USER, ROLE_ADMIN)));
-        userRepository.save(new User("user", "", roles(ROLE_USER)));
+        userRepository.save(new User("admin", encryptPassword("admin"), roles(ROLE_USER, ROLE_ADMIN)));
+        userRepository.save(new User("user", encryptPassword("password"), roles(ROLE_USER)));
+    }
+
+    private String encryptPassword(final String password) {
+        return passwordEncoder.encode(password);
     }
 }
