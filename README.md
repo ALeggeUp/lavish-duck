@@ -1,5 +1,7 @@
 # Lavish Duck
 
+[![Build Status](https://travis-ci.org/ALeggeUp/lavish-duck.svg?branch=master)](https://travis-ci.org/ALeggeUp/lavish-duck)
+
 
 What is it?
 -----------
