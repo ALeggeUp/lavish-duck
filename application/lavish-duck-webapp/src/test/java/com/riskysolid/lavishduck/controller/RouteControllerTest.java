@@ -63,6 +63,7 @@ public class RouteControllerTest {
     public void testFrontendRoutes() throws Exception {
 
         final List<String> routes = Arrays.asList(
+                "/login",
                 "/create",
                 "/existing",
                 "/intro",
